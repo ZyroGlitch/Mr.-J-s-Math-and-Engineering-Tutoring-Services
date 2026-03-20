@@ -10,5 +10,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/Mr.-J-s-Math-and-Engineering-Tutoring-Services",
+  base: process.env.VITE_BASE_URL || "/",
 })
