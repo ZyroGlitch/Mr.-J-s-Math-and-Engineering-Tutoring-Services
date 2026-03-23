@@ -11,6 +11,7 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import { RxHamburgerMenu } from "react-icons/rx";
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -69,7 +70,9 @@ export default function Navbar() {
                             <a href="#contact" className="hover:border-b-2 hover:border-orange-100">Contact</a>
                         </ul>
 
-                        <Button className='bg-slate-700 rounded-full shadow hover:bg-slate-800 hover:text-white'>Enroll Now</Button>
+                        <Link to='/enroll'>
+                            <Button className='bg-slate-700 rounded-full shadow hover:bg-slate-800 hover:text-white'>Enroll Now</Button>
+                        </Link>
                     </nav>
                 )
                     :
@@ -99,9 +102,9 @@ export default function Navbar() {
                                             <a href="#contact">Contact</a>
                                         </div>
 
-                                        <a href="#home">
-                                            <Button className='rounded-full w-[150px] bg-white text-black shadow hover:bg-slate-800 hover:text-white'>Enroll Now</Button>
-                                        </a>
+
+                                        <Link to='/enroll' className='rounded-full w-[150px] h-[50px] flex items-center justify-center bg-white text-black shadow hover:bg-slate-800 hover:text-white'>Enroll Now</Link>
+
 
                                         <DrawerClose asChild className='absolute top-4 right-4 shadow bg-orange-300 text-black hover:bg-slate-700 hover:text-white'>
                                             <Button size='sm'>X</Button>
