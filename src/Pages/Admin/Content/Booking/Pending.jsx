@@ -32,9 +32,17 @@ import {
 } from "@/components/ui/select"
 import { IoWarningOutline } from "react-icons/io5";
 import { toast } from 'sonner';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { PiNotePencil } from "react-icons/pi";
 
-export default function Booking() {
+export default function Pending() {
     const navigate = useNavigate();
 
     // --------------------------------------------------------------------------------
@@ -265,7 +273,6 @@ export default function Booking() {
         ...dataColumns
     ];
 
-
     // Action Handlers for View, Edit, and Delete buttons in the Actions column of the GridJS table
     const onView = (bookingId) => {
         // console.log('View record id:', bookingId);
@@ -299,6 +306,7 @@ export default function Booking() {
         const { data, error } = await supabase
             .from('booking_tbl')
             .select('*')
+            .eq('booking_status', 'Pending')
             .order('updated_at', { ascending: false });
 
         if (data) {
@@ -443,7 +451,7 @@ export default function Booking() {
         if (error) {
             console.error('Error deleting data:', error);
         } else {
-            navigate('/admin-booking'); // Redirect to the booking overview page after deletion
+            navigate('/admin-request-booking'); // Redirect to the booking overview page after deletion
 
             toast('Booking deleted successfully!', { type: 'success' });
 
@@ -466,75 +474,23 @@ export default function Booking() {
 
     return (
         <>
-            {/* Booking Status Dashboard */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                <div className="min-h-fit flex flex-col border border-slate-500/25 shadow-sm rounded-lg p-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500 font-semibold">Booking Requests</p>
-                            <p className="text-xl font-semibold">{bookingRequests.requested?.toLocaleString()}</p>
-                        </div>
-                        <div className="h-fit bg-blue-100 text-blue-500 rounded-lg p-3">
-                            <AiOutlineForm size={20} />
-                        </div>
-                    </div>
-
-                    <p className="text-xs text-left">
-                        100 Request added today
-                    </p>
-                </div>
-
-                <div className="min-h-fit flex flex-col border border-slate-500/25 shadow-sm rounded-lg p-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500 font-semibold">Pending Bookings</p>
-                            <p className="text-xl font-semibold">{bookingRequests.pending?.toLocaleString()}</p>
-                        </div>
-                        <div className="h-fit bg-blue-100 text-blue-500 rounded-lg p-3">
-                            <IoMdTime size={20} />
-                        </div>
-                    </div>
-
-                    <p className="text-xs text-left">
-                        100 Request added today
-                    </p>
-                </div>
-
-                <div className="min-h-fit flex flex-col border border-slate-500/25 shadow-sm rounded-lg p-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500 font-semibold">Confirmed Sessions</p>
-                            <p className="text-xl font-semibold">{bookingRequests.confirmed?.toLocaleString()}</p>
-                        </div>
-                        <div className="h-fit bg-blue-100 text-blue-500 rounded-lg p-3">
-                            <MdOutlineAssignment size={20} />
-                        </div>
-                    </div>
-
-                    <p className="text-xs text-left">
-                        100 Request added today
-                    </p>
-                </div>
-
-                <div className="min-h-fit flex flex-col border border-slate-500/25 shadow-sm rounded-lg p-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500 font-semibold">Completed Sessions</p>
-                            <p className="text-xl font-semibold">{bookingRequests.completed?.toLocaleString()}</p>
-                        </div>
-                        <div className="h-fit bg-blue-100 text-blue-500 rounded-lg p-3">
-                            <SlCheck size={20} />
-                        </div>
-                    </div>
-
-                    <p className="text-xs text-left">
-                        100 Request added today
-                    </p>
-                </div>
-            </div>
-
             {/* Grid Data Table Section */}
             <div className="w-full bg-white border border-slate-500/25 rounded-lg p-4">
+                {/* Booking Status Dashboard */}
+                <Breadcrumb className='mb-4'>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink render={<Link to='/admin-booking' />}>
+                                Booking
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage className='text-slate-700'>Pending Booking</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+
                 <div className="w-full overflow-x-auto text-sm relative">
                     <Link to='/admin-add-booking'>
                         <Button size='sm' className="absolute top-1 right-0 z-10 text-xs bg-blue-500 hover:bg-blue-600">
